@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "Bomb Pass API - Week 11",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:3001/api/v1" },
+    { "key": "demoUserId", "value": "1" },
+    { "key": "hubKey", "value": "CHANGE_ME_HUB_KEY" }
+  ],
+  "item": [
+    {
+      "name": "Question Sets - List",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-Demo-User", "value": "{{demoUserId}}" }],
+        "url": "{{baseUrl}}/question-sets"
+      }
+    },
+    {
+      "name": "Question Sets - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{demoUserId}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Library Trivia Set\",\n  \"subject\": \"General Knowledge\"\n}"
+        },
+        "url": "{{baseUrl}}/question-sets"
+      }
+    },
+    {
+      "name": "Question Sets - Patch 1",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{demoUserId}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"subject\": \"General Knowledge\"\n}"
+        },
+        "url": "{{baseUrl}}/question-sets/1"
+      }
+    },
+    {
+      "name": "Question Sets - Delete 1 (Expect 409 if in use)",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "X-Demo-User", "value": "{{demoUserId}}" }],
+        "url": "{{baseUrl}}/question-sets/1"
+      }
+    },
+    {
+      "name": "Sessions - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "{{demoUserId}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question_set_id\": 1\n}"
+        },
+        "url": "{{baseUrl}}/sessions"
+      }
+    },
+    {
+      "name": "Sessions - Start 1",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-Demo-User", "value": "{{demoUserId}}" }],
+        "url": "{{baseUrl}}/sessions/1/start"
+      }
+    },
+    {
+      "name": "Sessions - End 1",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-Demo-User", "value": "{{demoUserId}}" }],
+        "url": "{{baseUrl}}/sessions/1/end"
+      }
+    },
+    {
+      "name": "Players - Join",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Demo-User", "value": "2" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"session_id\": 1\n}"
+        },
+        "url": "{{baseUrl}}/players/join"
+      }
+    },
+    {
+      "name": "Players - Leave 1",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-Demo-User", "value": "2" }],
+        "url": "{{baseUrl}}/players/1/leave"
+      }
+    },
+    {
+      "name": "Results - Unauthorized (Expect 401)",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:3001/results"
+      }
+    },
+    {
+      "name": "Results - With Hub Key (Expect 200)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-Hub-Key", "value": "{{hubKey}}" }],
+        "url": "http://127.0.0.1:3001/results"
+      }
+    }
+  ]
+}
