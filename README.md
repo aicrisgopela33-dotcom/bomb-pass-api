@@ -88,3 +88,24 @@ The extra `20261016094707-add-session-player-foreign-keys.js` migration is not a
 | npm run db:check | Counts the rows in every table |
 | npm run db:reset | Empties the database, rebuilds every table and reloads the seed data |
 | npm run check | Runs the same automatic check that GitHub runs after every push |
+
+## Game API Endpoints (Week 11)
+
+Authentication uses the `X-Demo-User` header (user ID) for player/host routes, or `X-Hub-Key` for `/results`.
+
+| Method | Path | Who May Call It | Purpose |
+|---|---|---|---|
+| GET | `/question-sets` | `HOST`, `ADMIN` | List all question sets |
+| POST | `/question-sets` | `HOST`, `ADMIN` | Create a new question set |
+| GET | `/question-sets/:id` | `HOST`, `ADMIN` | Get a single question set |
+| PATCH | `/question-sets/:id` | `HOST`, `ADMIN` | Update a question set (owner or admin) |
+| DELETE | `/question-sets/:id` | `HOST`, `ADMIN` | Delete a question set (owner or admin) |
+| GET | `/sessions` | Public / Any caller | List game sessions (supports filters) |
+| GET | `/sessions/:id` | Public / Any caller | Get a single game session |
+| POST | `/sessions` | `HOST`, `ADMIN` | Create a new game session with server-generated code |
+| POST | `/sessions/:id/start` | `HOST`, `ADMIN` | Start a session (`LOBBY` -> `RUNNING`) |
+| POST | `/sessions/:id/end` | `HOST`, `ADMIN` | End a session (`FINISHED`) and finalize player ranks |
+| GET | `/sessions/:id/players` | Public / Any caller | List all player seats in a session |
+| POST | `/sessions/:id/players/join` | `PLAYER`, `HOST`, `ADMIN` | Join a lobby session or rejoin an existing seat |
+| PATCH | `/players/:playerId/status` | `PLAYER`, `HOST`, `ADMIN` | Update a player seat's status |
+| POST | `/players/:playerId/leave` | `PLAYER`, `HOST`, `ADMIN` | Leave/forfeit a player seat |
